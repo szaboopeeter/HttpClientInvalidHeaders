@@ -17,7 +17,7 @@ namespace HttpClientInvalidHeaders.Test
         }
 
         [Fact]
-        public async Task Test1()
+        public async Task CanSendRequest()
         {
             HttpRequestMessage request = new HttpRequestMessage
             {
@@ -30,6 +30,20 @@ namespace HttpClientInvalidHeaders.Test
             HttpResponseMessage response = await _client.SendAsync(request);
 
             Assert.True(response.IsSuccessStatusCode);
+        }
+
+        [Fact]
+        public void CanAddHeader()
+        {
+            HttpRequestMessage request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("/api/values", UriKind.Relative)
+            };
+
+            bool headerAdded = request.Headers.TryAddWithoutValidation("User-Agent", "UserAgent: {K: V}");
+
+            Assert.True(headerAdded);
         }
     }
 }
